@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body style="text-align: center; padding-top: 300px;">
+    <h1>Enter New Developer</h1>
+    <form action="" id="reg-form">
+        <label for="">Username</label>
+        <input type="text" autocomplete="off" id="username" placeholder="Employee Name"> <br> <br>
+        <label for="">Email</label>
+        <input type="email"  id="email" placeholder="Email"> <br> <br>
+        <input type="file" id="image"> <br> <br>
+        <input type="submit" value="Submit Form">
+    </form>
+</body>
+<script>
+    const form = document.getElementById('reg-form');
+    form.addEventListener('submit', registerUser);
+    async function registerUser(event) {
+				event.preventDefault()
+				const username = document.getElementById('username').value
+				const email = document.getElementById('email').value
+                const image = document.getElementById('image').value
+
+                // var re = /(\.jpg|\.jpeg|\.bmp|\.gif|\.png)$/i;
+                // if (!re.exec(image)) {
+                //     alert("File extension not supported!");
+                //     window.location.href = '/'
+                // }
+				const result = await fetch('/api/register', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						username,
+						email,
+                        image
+					})
+				}).then((res)=>res.json())
+                console.log(result);
+    }
+</script>
+</html>
