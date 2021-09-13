@@ -6,6 +6,7 @@ const Verify = require('../middleware/authentication');
 const validate = require('../validate/verifydata');
 const mongoose = require('mongoose');
 const multer = require("multer");
+const { message } = require('../validate/verifydata');
 global.atob = require('atob')
 
 require('dotenv').config()
@@ -70,7 +71,11 @@ exports.register = async (req, res)=>{
     const password = await bcrypt.hash(random, 10)
     // console.log(password);
     const result = await validate.validateAsync(req.body)
-    console.log(result);
+    // imageUpload.single('images/',originalname);
+    var re = /(\.jpg|\.jpeg|\.bmp|\.gif|\.png)$/i;
+    if (!re.exec(originalname)) {
+        return res.json({status:"Error", message:"Image File Extension Not Supported Please Upload jpg/jpeg/png"});
+    }
 
     try {
         const response = await User.create({
@@ -182,3 +187,10 @@ exports.getfeedback =  (req, res) =>{
   }).lean()
 }
 
+exports.dashboard = async(req, res) =>{
+  const record = await User.aggregate([
+    { $match: { _id: { $ne: 'userid' } } },
+    { $sample: { size: 2 } }
+])
+  res.json(record);
+}

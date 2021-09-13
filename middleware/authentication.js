@@ -5,7 +5,7 @@ const createtoken = async(user) =>{
     const tokens = jwt.sign({
         id: user.userid,
         email: user.email
-    }, process.env.ACCESS_TOKEN_SECRET);
+    }, process.env.ACCESS_TOKEN_SECRET, {expiresIn:'24h'});
     return tokens
 }
 

@@ -7,6 +7,8 @@ const upload = multer()
 
 router.get('/dev', Verify.auth, controller.getalldata) 
 
+
+
 router.post('/api/register', upload.single('image') ,controller.register)
 
 router.post('/api/login',controller.login)
@@ -14,5 +16,7 @@ router.post('/api/login',controller.login)
 router.post('/addfeedback', Verify.auth, controller.addFeedback)
 
 router.get('/feedback', Verify.auth, controller.getfeedback)
+
+router.get('/dashboard', Verify.auth, controller.dashboard)
 
 module.exports = router
